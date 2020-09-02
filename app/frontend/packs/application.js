@@ -14,3 +14,7 @@ require("@rails/activestorage").start()
 //
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
+
+import "controllers"
+import "styles/frontend"
+import '@fortawesome/fontawesome-free/css/all.css'
