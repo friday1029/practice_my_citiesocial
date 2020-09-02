@@ -20,7 +20,7 @@ import "controllers";
 import "styles/frontend";
 import "styles/shared";
 
-import "script/frontend";
-import "script/shared";
+import "scripts/frontend";
+import "scripts/shared";
 
 
