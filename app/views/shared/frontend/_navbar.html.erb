@@ -18,7 +18,7 @@
           </div>
           <div class="control">
             <a class="button is-primary">
-              <i class="fas fa-search">&nbsp; 搜尋</i>
+              <i class="fas fa-search"></i>&nbsp; 搜尋
             </a>
           </div>
         </div>
@@ -26,8 +26,8 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <%= link_to "註冊", '#', class: 'button is-primary navbar-item' %>
-          <%= link_to "登入", '#', class: 'button is-light navbar-item' %>
+          <%= link_to "註冊", new_user_registration_path, class: 'button is-primary' %>
+          <%= link_to "登入", new_user_session_path, class: 'button is-light' %>
         </div>
       </div>
     </div>
