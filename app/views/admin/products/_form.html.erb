@@ -1,0 +1,41 @@
+<%= form_with(model: [:admin, product]) do |form| %>
+  <div class="columns">
+    <div class="column is-6">
+      <div class="field">
+        <%= form.label :name, "商品名稱", class: 'label' %>
+        <%= form.text_field :name, class: 'input' %>
+      </div>
+    </div>
+    <div class="column is-6">
+      <div class="field">
+        <%= form.label :vendor, "廠商", class: 'label' %>
+        <%= form.text_field :vendor, class: 'input' %>
+      </div>
+    </div>
+  </div>
+  <div class="columns">
+    <div class="column is-6">
+      <div class="field">
+        <%= form.label :list_price, "定價", class: 'label' %>
+        <%= form.number_field :list_price, class: 'input' %>
+      </div>
+    </div>
+    <div class="column is-6">
+      <div class="field">
+        <%= form.label :sell_price, "售價", class: 'label' %>
+        <%= form.number_field :list_price, class: 'input' %>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <%= form.check_box :on_sell %>
+    <%= form.label :on_sell, "是否上架?", class: 'check_box' %>
+  </div>
+  <div class="field">
+    <%= form.label :description, "商品描述", class: 'label'  %>
+    <%= form.text_area :descriptio, class: 'textarea' %>
+  </div>
+
+  <%= form.submit "新增商品", class: 'button is-primary' %>
+
+<% end %>
