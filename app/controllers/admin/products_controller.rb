@@ -1,7 +1,7 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :find_product, only: [:edit, :update, :destroy]
   def index
-    @products = Product.all
+    @products = Product.all.includes(:vendor)
   end
 
   def new
