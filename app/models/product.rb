@@ -1,6 +1,5 @@
 class Product < ApplicationRecord
-  extend FriendlyId
-  friendly_id :code_generator, use: :slugged, slug_column: :code
+  include CodeGenerator
   
   acts_as_paranoid
 
