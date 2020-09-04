@@ -39,7 +39,7 @@
                 訂單紀錄
               </a>  
               <hr class="navbar-divider">
-              <%= link_to "登出", destroy_user_session_path, method:'delete', class:'navbar-item' %>          </div>
+              <%= link_to "登出", destroy_user_session_path, method:'delete', data: {confirm: '確認登出?!' }, class:'navbar-item' %>
             </div>
           </div>
         <% else %>
