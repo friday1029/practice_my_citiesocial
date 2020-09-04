@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PracticeMyCitiesocial</title>
+    <title>PracticeMyCitiesocial後台管理</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <meta name="turbolinks-cache-control" content="no-cache">
@@ -12,6 +12,8 @@
   <body>
     <%= render 'shared/flash' if notice %>
     <%= render 'shared/backend/navbar' %>
-    <%= yield %>
+    <section class="container">
+      <%= yield %>
+    </section>
   </body>
 </html>
