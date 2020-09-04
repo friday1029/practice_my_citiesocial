@@ -35,9 +35,9 @@
   </div>
   <div class="field">
     <%= form.label :description, "商品描述", class: 'label'  %>
-    <%= form.text_area :descriptio, class: 'textarea' %>
+    <%= form.rich_text_area :description %>
   </div>
 
-  <%= form.submit "新增商品", class: 'button is-primary' %>
+  <%= form.submit class: 'button is-primary' %>
 
 <% end %>
