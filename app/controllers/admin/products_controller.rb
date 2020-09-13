@@ -1,11 +1,12 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :find_product, only: [:edit, :update, :destroy]
   def index
-    @products = Product.includes(:vendor).page(params[:page]).per(5)
+    @products = Product.includes(:vendor).page(params[:page]).per(10)
   end
 
   def new
     @product = Product.new
+    @product.skus.build
   end
 
   def create
@@ -45,7 +46,11 @@ class Admin::ProductsController < Admin::BaseController
                                    :list_price,
                                    :sell_price,
                                    :on_sell,
-                                   :description)
+                                   :description,
+                                   skus_attributes:[
+                                     :id, :spec, :quantity, :_destroy
+                                   ]
+                                   )
   end
   def find_product
     @product = Product.friendly.find(params[:id])
