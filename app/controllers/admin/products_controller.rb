@@ -47,6 +47,7 @@ class Admin::ProductsController < Admin::BaseController
                                    :sell_price,
                                    :on_sell,
                                    :description,
+                                   :cover_image,
                                    skus_attributes:[
                                      :id, :spec, :quantity, :_destroy
                                    ]

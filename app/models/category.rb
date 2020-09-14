@@ -5,4 +5,5 @@ class Category < ApplicationRecord
   has_many :products
 
   validates :name, presence: true
+  default_scope { order(position: :asc)}
 end
