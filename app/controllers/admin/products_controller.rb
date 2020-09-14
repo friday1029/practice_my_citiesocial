@@ -48,6 +48,7 @@ class Admin::ProductsController < Admin::BaseController
                                    :on_sell,
                                    :description,
                                    :cover_image,
+                                   :category_id,
                                    skus_attributes:[
                                      :id, :spec, :quantity, :_destroy
                                    ]
