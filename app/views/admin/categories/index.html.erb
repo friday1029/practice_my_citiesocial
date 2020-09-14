@@ -14,7 +14,7 @@
   </thead>
   <tbody class="sortable-items">
     <% @categories.each do |category| %>
-      <tr>
+      <tr class="item" data-item="<%= dom_id(category) %>">
         <td>
           <i class="fas fa-grip-vertical"></i>
           <%= link_to category.name, edit_admin_category_path(category) %>
