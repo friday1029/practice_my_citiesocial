@@ -14,6 +14,11 @@ class Cart
     end
   end
   
+  def total_price
+    @items.reduce(0) { |sum, item| sum + item.total_price }
+    #記得reduce(0) 要給初始值,不然會拿陣列中第一個物件當初始值
+  end
+
   def empty?
     @items.empty?
   end

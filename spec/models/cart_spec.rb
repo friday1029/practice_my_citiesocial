@@ -16,10 +16,21 @@ RSpec.describe Cart, type: :model do
     end
     it "商品可以放到購物車裡，也可以再拿出來" do
       cart = Cart.new
-      v1 = Vendor.create(title: 'ptt')
-      p1 = Product.create(name: "kk", list_price: '20', sell_price: '2', vendor: v1)
+      # v1 = Vendor.create(title: 'ptt')
+      # p1 = Product.create(name: "kk", list_price: '20', sell_price: '2', vendor: v1)
+      p1 = FactoryBot.create(:product)
       cart.add_item(p1.id)
       expect(cart.items.first.product).to be_a Product
     end
+    it "可以計算整台購物車的總消費金額" do
+      cart = Cart.new
+      p1 = create(:product, sell_price:5)
+      p2 = create(:product, sell_price:10)
+      3.times { cart.add_item(p1.id)}
+      2.times { cart.add_item(p2.id)}
+  
+      expect(cart.total_price).to eq 35
+    end
+
   end
 end
