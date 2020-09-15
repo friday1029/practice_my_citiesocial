@@ -19,6 +19,12 @@ class Cart
     #記得reduce(0) 要給初始值,不然會拿陣列中第一個物件當初始值
   end
 
+  def to_serialize
+    items = @items.map { |item| { "product_id" => item.product_id, 
+                                "quantity" => item.quantity}}
+    { "items" => items}
+  end
+
   def empty?
     @items.empty?
   end
