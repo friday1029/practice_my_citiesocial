@@ -1,7 +1,19 @@
 class Cart
   attr_reader :items
-  def initialize
-    @items =[]
+  def initialize( hash =[])
+    @items = hash
+  end
+
+  def self.form_hash( hash = nil )
+    if hash && hash["items"]
+      items = hash["items"].map { |item| 
+        CartItem.new(item["product_id"], item["quantity"])
+      }
+      cart = Cart.new(items)
+    else
+      Cart.new
+    end
+
   end
 
 
