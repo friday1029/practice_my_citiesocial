@@ -1,7 +1,14 @@
 class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   before_action :find_categories, unless: :backend?
+  helper_method :current_cart
+
   private
+  
+  def current_cart
+    @cart9527 ||= Cart.form_hash(session[:cart_9527])
+  end
+
   def record_not_found
     render file: "#{Rails.root}/public/404.html",
            layout: false,

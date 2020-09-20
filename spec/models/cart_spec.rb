@@ -13,6 +13,13 @@ RSpec.describe Cart, type: :model do
       expect(cart.items.first.quantity).to be 3
       expect(cart.items.last.quantity).to be 2
     end
+    it "可以一次加入多個相同種類的商品到購物車裡，購買項目（CartItem）並不會增加，但商品的數量會改變" do
+      cart.add_item(1,3)
+      cart.add_item(2,5)
+      expect(cart.items.first.quantity).to be 3
+      expect(cart.items.last.quantity).to be 5
+    end
+
     it "商品可以放到購物車裡，也可以再拿出來" do
       # v1 = Vendor.create(title: 'ptt')
       # p1 = Product.create(name: "kk", list_price: '20', sell_price: '2', vendor: v1)
