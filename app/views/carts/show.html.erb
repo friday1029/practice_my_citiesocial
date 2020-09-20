@@ -1,20 +1,33 @@
 <section class="section">
-  <table class="table is-fullwidth">
-    <thead>
-      <th>品項</th>
-      <th>單價</th>
-      <th>數量</th>
-      <th>狀態</th>
-      <th>  </th>
-    </thead>
-    <tbody>
-      <% current_cart.items.each do |item| %>
-        <tr>
-          <th><%= item.product.name %></th>
-          <th><%= item.product.sell_price %></th>
-          <th><%= item.quantity %></th>
-          <th><%= item.total_price %></th>
-      <% end %>
-    </tbody>
-  </table>
+  <h1 class="title"">購物車
+    <%= link_to cart_path, method: 'delete', data: { confirm: "確定要清空購物車嗎?"}, class: 'is-size-5' do %>
+      <i class="far fa-trash-alt"></i>
+      <span>清空購物車</span>
+    <% end %>
+  </h1>
+  <% if current_cart.empty? %>
+    你的購物車是空的!</br>
+    <%= link_to "繼續購物", root_paht, class: 'button is-medium' %>
+  <% else %>
+    <table class="table is-fullwidth">
+      <thead>
+        <th>品項</th>
+        <th>單價</th>
+        <th>數量</th>
+        <th>狀態</th>
+        <th>  </th>
+      </thead>
+      <tbody>
+        <% current_cart.items.each do |item| %>
+          <tr>
+            <th><%= item.product.name %></th>
+            <th><%= item.product.sell_price %></th>
+            <th><%= item.quantity %></th>
+            <th><%= item.total_price %></th>
+        <% end %>
+      </tbody>
+    </table>
+    <%= link_to "繼續購物", root_path, class: 'button is-medium' %>
+    <%= link_to "前往結帳", '#', class: 'button is-danger is-medium' %>
+  <% end %>
 </section>
