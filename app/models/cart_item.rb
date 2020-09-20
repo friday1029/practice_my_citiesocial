@@ -10,7 +10,9 @@ class CartItem
   end
   
   def product
-    Product.find_by(id: product_id)
+    #Product.find_by(id: product_id)
+    #實際上 product_id是一串亂碼,用find_by會找不到
+    Product.friendly.find(product_id)
   end
   
   def total_price

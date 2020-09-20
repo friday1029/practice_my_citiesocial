@@ -1,0 +1,20 @@
+<section class="section">
+  <table class="table is-fullwidth">
+    <thead>
+      <th>品項</th>
+      <th>單價</th>
+      <th>數量</th>
+      <th>狀態</th>
+      <th>  </th>
+    </thead>
+    <tbody>
+      <% current_cart.items.each do |item| %>
+        <tr>
+          <th><%= item.product.name %></th>
+          <th><%= item.product.sell_price %></th>
+          <th><%= item.quantity %></th>
+          <th><%= item.total_price %></th>
+      <% end %>
+    </tbody>
+  </table>
+</section>

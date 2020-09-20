@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:show]
 
+  resource :cart, only: [:show, :destroy]
+ 
   namespace :admin do
     root 'products#index'
     resources :products, exctpt: [:show]
