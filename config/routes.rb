@@ -7,7 +7,12 @@ Rails.application.routes.draw do
 
   resources :categories, only: [:show]
 
-  resource :cart, only: [:show, :destroy]
+  resource :cart, only: [:show, :destroy] do
+    collection do
+      get 'checkout'
+    end
+  end
+
  
   namespace :admin do
     root 'products#index'
