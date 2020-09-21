@@ -13,9 +13,7 @@ class Cart
     else
       Cart.new
     end
-
   end
-
 
   def add_item (product_id, quantity = 1 )
     found = @items.find { |item| item.product_id == product_id }

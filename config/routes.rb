@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :order, except: [:new, :edit, :update, :destroy]
+
  
   namespace :admin do
     root 'products#index'
