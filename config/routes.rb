@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :order, except: [:new, :edit, :update, :destroy]
+  resources :orders, except: [:new, :edit, :update, :destroy]
 
  
   namespace :admin do
