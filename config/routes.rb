@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   end
 
   resources :orders, except: [:new, :edit, :update, :destroy] do
-    get 'confirm'
+    collection do
+      get 'confirm'
+    end
   end
 
 
