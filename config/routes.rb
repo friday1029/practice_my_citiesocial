@@ -14,11 +14,13 @@ Rails.application.routes.draw do
   end
 
   resources :orders, except: [:new, :edit, :update, :destroy] do
+    member do
+      delete 'cancel'
+    end
     collection do
       get 'confirm'
     end
   end
-
 
  
   namespace :admin do

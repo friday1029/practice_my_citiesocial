@@ -17,21 +17,11 @@
           <th><%= order.total_price %></th>
           <th><%= order.state %></th>
           <th>
-            <%= link_to "付款", '#', class: 'button is-primary is-small' %>
-            <%= link_to "取消", '#', class: 'button is-danger is-small' %>
-
-
+            <%= link_to "付款", '#', class: 'button is-primary is-small' if order.may_pay? %>
+            <%= link_to "取消", cancel_order_path(order), method: 'delete', data: {confirm: "確定取消訂單? \n 如果訂單已付款將會進行退費"}, class: 'button is-danger is-small' if order.may_cancel? %>
           </th>
         </tr>
       <% end %>
-
-
-
     </tbody>
-
-
-
   </table>
-
-
 </section>
