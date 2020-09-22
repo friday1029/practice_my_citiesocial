@@ -37,6 +37,55 @@ class OrdersController < ApplicationController
     end
   end
 
+  def pay
+    @order = current_user.orders.find(params[:id])
+    resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/request") do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
+      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
+      req.body = {
+        productName: "練習五百倍大平台",
+        amount: @order.total_price.to_i,
+        currency: "TWD",
+        confirmUrl: "http://localhost:4000/orders/#{@order.id}/pay_confirm",
+        orderId: @order.num
+      }.to_json
+    end
+    result = JSON.parse(resp.body)
+    if result["returnCode"] == "0000"
+      payment_url = result["info"]["paymentUrl"]["web"]
+      redirect_to payment_url
+    else
+      p result["returnCode"]
+      render order_path, notice: '付款發生錯誤'
+    end
+  end
+  
+  def pay_confirm
+    @order = current_user.orders.find(params[:id])
+    resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/#{params[:transactionId]}/confirm") do |req|
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
+      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
+      req.body = {
+        amount: @order.total_price.to_i,
+        currency: "TWD",
+      }.to_json
+    end
+    result = JSON.parse(resp.body)
+    if result["returnCode"] == "0000"
+      order_id = result["info"]["orderId"]
+      transaction_id = result["info"]["transactionId"]
+      # 1. 變更 order 狀態
+      @order = current_user.orders.find_by(num: order_id)
+      @order.pay!(transaction_id: transaction_id)
+      #在改變狀態時,可以一併送參數進去
+      redirect_to root_path, notice: '付款已完成'
+    else
+      redirect_to root_path, notice: '付款發生錯誤'
+    end
+  end
+
   def confirm
     resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/#{params[:transactionId]}/confirm") do |req|
       req.headers['Content-Type'] = 'application/json'

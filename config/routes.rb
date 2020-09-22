@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   resources :orders, except: [:new, :edit, :update, :destroy] do
     member do
       delete 'cancel'
+      post 'pay'
+      get 'pay_confirm'
     end
     collection do
       get 'confirm'
