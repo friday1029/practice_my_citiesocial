@@ -11,22 +11,18 @@ class OrdersController < ApplicationController
       @order.order_items.build(sku_id: item.sku_id, quantity: item.quantity)
     end
     if @order.save
-      resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/request") do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
-        req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
-        req.body = {
+      linepay = LinepayService.new("/payments/request")
+      linepay.perform(
+        {
           productName: "練習五百倍大平台",
           amount: current_cart.total_price.to_i,
           currency: "TWD",
           confirmUrl: "http://localhost:4000/orders/confirm",
           orderId: @order.num
-        }.to_json
-      end
-      result = JSON.parse(resp.body)
-      if result["returnCode"] == "0000"
-        payment_url = result["info"]["paymentUrl"]["web"]
-        redirect_to payment_url
+        }
+      )
+      if linepay.success?
+        redirect_to linepay.payment_url
       else
         flash[:notice] = "付款發生錯誤"
         render 'carts/checkout'
@@ -37,72 +33,18 @@ class OrdersController < ApplicationController
     end
   end
 
-  def pay
-    @order = current_user.orders.find(params[:id])
-    resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/request") do |req|
-      req.headers['Content-Type'] = 'application/json'
-      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
-      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
-      req.body = {
-        productName: "練習五百倍大平台",
-        amount: @order.total_price.to_i,
-        currency: "TWD",
-        confirmUrl: "http://localhost:4000/orders/#{@order.id}/pay_confirm",
-        orderId: @order.num
-      }.to_json
-    end
-    result = JSON.parse(resp.body)
-    if result["returnCode"] == "0000"
-      payment_url = result["info"]["paymentUrl"]["web"]
-      redirect_to payment_url
-    else
-      p result["returnCode"]
-      render order_path, notice: '付款發生錯誤'
-    end
-  end
-  
-  def pay_confirm
-    @order = current_user.orders.find(params[:id])
-    resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/#{params[:transactionId]}/confirm") do |req|
-      req.headers['Content-Type'] = 'application/json'
-      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
-      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
-      req.body = {
-        amount: @order.total_price.to_i,
-        currency: "TWD",
-      }.to_json
-    end
-    result = JSON.parse(resp.body)
-    if result["returnCode"] == "0000"
-      order_id = result["info"]["orderId"]
-      transaction_id = result["info"]["transactionId"]
-      # 1. 變更 order 狀態
-      @order = current_user.orders.find_by(num: order_id)
-      @order.pay!(transaction_id: transaction_id)
-      #在改變狀態時,可以一併送參數進去
-      redirect_to root_path, notice: '付款已完成'
-    else
-      redirect_to root_path, notice: '付款發生錯誤'
-    end
-  end
-
   def confirm
-    resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/#{params[:transactionId]}/confirm") do |req|
-      req.headers['Content-Type'] = 'application/json'
-      req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
-      req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
-      req.body = {
+    linepay = LinepayService.new("/payments/#{params[:transactionId]}/confirm")
+    linepay.perform(
+      {
         amount: current_cart.total_price.to_i,
         currency: "TWD",
-      }.to_json
-    end
-    result = JSON.parse(resp.body)
-    if result["returnCode"] == "0000"
-      order_id = result["info"]["orderId"]
-      transaction_id = result["info"]["transactionId"]
+      }
+    )   
+    if linepay.success?
       # 1. 變更 order 狀態
-      order = current_user.orders.find_by(num: order_id)
-      order.pay!(transaction_id: transaction_id)
+      order = current_user.orders.find_by(num: linepay.order_id)
+      order.pay!(transaction_id: linepay.transaction_id)
       #在改變狀態時,可以一併送參數進去
       # 2. 清空購物車
       session[:cart_9527] = nil
@@ -112,16 +54,51 @@ class OrdersController < ApplicationController
     end
   end
 
+  def pay
+    @order = current_user.orders.find(params[:id])
+    linepay = LinepayService.new("/payments/request")
+    linepay.perform(
+      {
+        productName: "練習五百倍大平台",
+        amount: @order.total_price.to_i,
+        currency: "TWD",
+        confirmUrl: "http://localhost:4000/orders/#{@order.id}/pay_confirm",
+        orderId: @order.num
+      }
+    )
+    if linepay.success?
+      redirect_to linepay.payment_url
+    else
+      redirect_to orders_path, notice: '付款發生錯誤'
+    end
+  end
+  
+  def pay_confirm
+    @order = current_user.orders.find(params[:id])
+    linepay = LinepayService.new("/payments/#{params[:transactionId]}/confirm")
+    linepay.perform(
+      {
+        amount: @order.total_price.to_i,
+        currency: "TWD",
+      }
+    )
+    if  linepay.success?
+      # 1. 變更 order 狀態
+      @order = current_user.orders.find_by(num: linepay.order_id)
+      @order.pay!(transaction_id: linepay.transaction_id)
+      #在改變狀態時,可以一併送參數進去
+      redirect_to root_path, notice: '付款已完成'
+    else
+      redirect_to root_path, notice: '付款發生錯誤'
+    end
+  end
+
   def cancel
     @order = current_user.orders.find(params[:id])
     if @order.paid?
-      resp = Faraday.post("#{ENV['line_pay_endpoint']}/v2/payments/#{@order.transaction_id}/refund") do |req|
-        req.headers['Content-Type'] = 'application/json'
-        req.headers['X-LINE-ChannelId'] = ENV['line_pay_channel_id']
-        req.headers['X-LINE-ChannelSecret'] = ENV['line_pay_channel_secret']
-      end
-      result = JSON.parse(resp.body)
-      if result["returnCode"] == "0000"
+      linepay = LinepayService.new("/payments/#{@order.transaction_id}/refund")
+      linepay.perform
+      if linepay.success?
         @order.cancel!
         redirect_to orders_path, notice: "訂單#{@order.num}已取消,並完成退款"
       else
@@ -131,10 +108,7 @@ class OrdersController < ApplicationController
       @order.cancel!
       redirect_to orders_path, notice: "訂單#{@order.num}已取消"
     end
-
   end
-
-
 
   private
 
