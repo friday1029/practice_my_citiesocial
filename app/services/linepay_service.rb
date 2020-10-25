@@ -1,5 +1,4 @@
 class LinepayService
-  attr_reader :result
   def initialize(api_type)
     @api_type = api_type
   end
