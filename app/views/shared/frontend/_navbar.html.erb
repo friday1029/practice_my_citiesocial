@@ -13,19 +13,19 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-
+      <%= form_tag search_products_path, method: :get, class: 'questions-search-form'  do %>
         <div class="navbar-item field has-addons">
           <div class="control">
-            <input class="input" type="text" placeholder="輸入關鍵字">
+            <input class="form-control input" name="query_string" type="text" placeholder="輸入關鍵字">
           </div>
           <div class="control">
-            <a class="button is-primary">
+            <button type="submit" class="button is-primary">
               <i class="fas fa-search"></i>&nbsp; 搜尋
-            </a>
+            </button>
           </div>
         </div>
+      <% end %>
     </div>
-
     <div class="navbar-end">
       <div class="navbar-item">
         <% if user_signed_in? %>
@@ -44,6 +44,8 @@
             <div class="navbar-dropdown">
               <%= link_to "個人資料", edit_user_registration_path, class:'navbar-item' %>
               <%= link_to "訂單紀錄", orders_path, class: 'navbar-item' %>
+              <hr class="navbar-divider">
+              <%= link_to "後台管理", admin_root_path, class: 'navbar-item' %>
               <hr class="navbar-divider">
               <%= link_to "登出", destroy_user_session_path, method:'delete', data: {confirm: '確認登出?!' }, class:'navbar-item' %>
             </div>
