@@ -9,9 +9,9 @@
               <figure class="image">
                 <%= link_to product_path(product) do  %>
                   <% if product.cover_image.attached? %>  
-                    <%= image_tag product.cover_image.variant( resize: "303x202") %>
+                    <%= image_tag product.cover_image.variant(resize_to_fill: [nil, 300]) %>
                   <% else %>
-                    <%= image_tag 'https://fakeimg.pl/303x202/?text=cover_image' %>
+                    <%= image_tag 'https://fakeimg.pl/445x300/?text=cover_image' %>
                   <% end %>
                 <% end %>
               </figure>
