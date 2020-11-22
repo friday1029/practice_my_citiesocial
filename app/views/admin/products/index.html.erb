@@ -5,9 +5,10 @@
 <table class="table is-fullwidth">
   <thead>
     <tr>
+      <th></th>
       <th>商品名稱</th>
       <th>廠商</th>
-      <th>價格</th>
+      <th>定價/售價</th>
       <th>銷售狀態</th>  
       <th></th>
     </tr>
@@ -15,6 +16,13 @@
   <tbody>
     <% @products.each do |product| %>
       <tr>
+        <td>
+          <% if product.cover_image.attached? %>  
+            <%= image_tag product.cover_image.variant(resize_to_fill: [50, 50]) %>
+          <% else %>
+            <%= image_tag 'https://fakeimg.pl/50x50/?text=No_Cover' %>
+          <% end %>  
+        </td>
         <td><%= link_to "#{product.name}[商品編號:#{product.code}]", edit_admin_product_path(product) %></td>
         <td><%= product.vendor.title %></td>
         <td><%= product.list_price %> / <%= product.sell_price %></td>

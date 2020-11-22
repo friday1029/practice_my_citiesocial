@@ -2,28 +2,34 @@
   <section class="container">
     <h1 class="title"><%= title ||= "" %></h1>
     <div class="columns is-multiline">
-      <% products.each do |product| %>
-        <div class="column is-4">
-          <div class="card product-item is-shadowless">
-            <div class="card-image">
-              <figure class="image">
-                <%= link_to product_path(product) do  %>
-                  <% if product.cover_image.attached? %>  
-                    <%= image_tag product.cover_image.variant(resize_to_fill: [nil, 300]) %>
-                  <% else %>
-                    <%= image_tag 'https://fakeimg.pl/445x300/?text=cover_image' %>
+      <% if products.empty? %>
+        <div class="content">
+          <h4 class="is-size-4">找不到商品</h4>
+        </div>
+      <% else %>
+        <% products.each do |product| %>
+          <div class="column is-3">
+            <div class="card product-item is-shadowless">
+              <div class="card-image">
+                <figure class="image">
+                  <%= link_to product_path(product) do  %>
+                    <% if product.cover_image.attached? %>  
+                      <%= image_tag product.cover_image.variant(resize_to_fill: [400, 400]) %>
+                    <% else %>
+                      <%= image_tag 'https://fakeimg.pl/400x400/?text=cover_image' %>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="content">
-                <h4 class="is-size-6"><%= product.vendor.title %></h4>
-                <p><%= link_to product.name, product, class: 'has-text-dark' %>
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="content">
+                  <h4 class="is-size-6"><%= product.vendor.title %></h4>
+                  <p><%= link_to product.name, product, class: 'has-text-dark' %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
   </section>

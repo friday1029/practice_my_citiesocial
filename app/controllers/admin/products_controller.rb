@@ -1,7 +1,8 @@
 class Admin::ProductsController < Admin::BaseController
   before_action :find_product, only: [:edit, :update, :destroy]
   def index
-    @products = Product.includes(:vendor).page(params[:page]).per(10)
+    @products = Product.includes(:vendor).page(params[:page]).per(10).with_attached_cover_image
+    #@products = Product.includes(:vendor).with_attached_cover_image
   end
 
   def new
