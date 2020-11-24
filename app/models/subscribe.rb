@@ -1,3 +1,3 @@
 class Subscribe < ApplicationRecord
-  validates :email, uniqueness: true
+  validates :email, format: { with: /\A[^@]+@[^@]+\z/}, uniqueness: true
 end

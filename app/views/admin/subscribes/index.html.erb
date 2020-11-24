@@ -1,0 +1,22 @@
+<section class="section">
+  <table class="table is-fullwidth">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>訂閱日期</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @subscribes.each do |subscribe| %>
+        <tr>
+          <th><%= subscribe.email %></th>
+          <th><%= subscribe.created_at%></th>
+          <th>
+            <%= link_to "刪除", admin_subscribe_path(subscribe), method: 'delete', data: {confirm: '確認要刪除這個訂閱Email嗎?'}, class: 'button is-small is-danger' %>
+          </th>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

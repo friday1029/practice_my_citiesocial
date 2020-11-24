@@ -27,8 +27,8 @@ export default class extends Controller {
             this.emailTarget.value='';
             break;
 
-          case 'duplicated':
-            alert(`${response.email}訂閱過囉~`)
+          case 'duplicated_or_format_error':
+            alert(`${response.email}訂閱過或格式錯誤哦!`)
             break;
         }
       },

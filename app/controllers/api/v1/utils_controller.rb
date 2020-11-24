@@ -5,7 +5,7 @@ class Api::V1::UtilsController < ApplicationController
     if sub.save
       render json: { status: 'ok', email: email }
     else
-      render json: { status: 'duplicated', email: email }
+      render json: { status: 'duplicated_or_format_error', email: email }
     end
   end
 

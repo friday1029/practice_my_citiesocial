@@ -15,6 +15,8 @@ class Product < ApplicationRecord
   has_many :skus
   accepts_nested_attributes_for :skus, reject_if: :all_blank, allow_destroy: true
 
+  scope :on_sell_products, -> { where(on_sell: 'true').includes(:vendor).order(updated_at: :desc).with_attached_cover_image }
+  
   private
   def code_generator
     SecureRandom.hex(10)

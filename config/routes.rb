@@ -39,6 +39,7 @@ Rails.application.routes.draw do
         put 'sort'
       end
     end
+    resources :subscribes, only: [:index, :destroy]
   end
 
   namespace :api do
