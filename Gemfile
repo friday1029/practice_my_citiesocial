@@ -37,6 +37,7 @@ gem 'acts_as_list', '~> 1.0', '>= 1.0.2'
 gem 'faraday', '~> 1.0', '>= 1.0.1'
 gem 'aasm', '~> 5.1', '>= 5.1.1'
 gem 'ransack', '~> 2.3', '>= 2.3.2'
+gem "aws-sdk-s3", require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
