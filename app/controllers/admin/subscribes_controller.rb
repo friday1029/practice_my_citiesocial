@@ -1,4 +1,4 @@
-class Admin::SubscribesController < ApplicationController
+class Admin::SubscribesController < Admin::BaseController
   before_action :find_subscribe, only: [:destroy]
   def index
     @subscribes = Subscribe.order( created_at: :desc)
