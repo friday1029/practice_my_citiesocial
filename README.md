@@ -10,8 +10,8 @@
   
 
 - 前台及後台
-  - 前台: `http://localhost:4000`
-  - 後台: `http://localhost:4000/admin`
+  - 前台: `https://david-practice-my-citiesocial.herokuapp.com/`
+  - 後台: `https://david-practice-my-citiesocial.herokuapp.com/admin`
 - 前台
   - 會員功能
     - 第三方登入: google 及 Facebook 登入

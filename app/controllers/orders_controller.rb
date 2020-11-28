@@ -17,7 +17,7 @@ class OrdersController < ApplicationController
           productName: "David CitieSocial練習",
           amount: current_cart.total_price.to_i,
           currency: "TWD",
-          confirmUrl: "http://localhost:4000/orders/confirm",
+          confirmUrl: "https://david-practice-my-citiesocial.herokuapp.com/orders/confirm",
           productImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ruby_On_Rails_Logo.svg/300px-Ruby_On_Rails_Logo.svg.png",
           orderId: @order.num
         }
@@ -63,7 +63,7 @@ class OrdersController < ApplicationController
         productName: "David CitieSocial練習",
         amount: @order.total_price.to_i,
         currency: "TWD",
-        confirmUrl: "http://localhost:4000/orders/#{@order.id}/pay_confirm",
+        confirmUrl: "https://david-practice-my-citiesocial.herokuapp.com/orders/#{@order.id}/pay_confirm",
         productImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Ruby_On_Rails_Logo.svg/300px-Ruby_On_Rails_Logo.svg.png",
         orderId: @order.num
       }
