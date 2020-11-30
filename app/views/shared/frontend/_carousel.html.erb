@@ -3,7 +3,7 @@
     <div class="item">
       <%= link_to product_path(product) do %>
         <% if product.cover_image.attached? %>  
-          <%= image_tag product.cover_image.variant(resize_to_fill: [500  , nil]) %>
+          <%= image_tag product.cover_image.variant(resize_to_fill: [500  , 500]) %>
         <% else %>
           <%= image_tag 'https://fakeimg.pl/500x500/?text=NO cover' %>
         <% end %>
